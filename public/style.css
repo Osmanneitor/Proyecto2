@@ -1,0 +1,161 @@
+body {
+    margin: 0px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    background-color: mediumseagreen;
+    color: darkred;
+}
+
+header a {
+    text-decoration: none;
+    color: darkred;
+    background-color: beige;
+    border-top-right-radius: 0px; 
+    padding: 6%;
+}
+#ca{
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
+    padding-right: 0px;
+}
+#ce{
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    padding-left: 0px;
+    text-decoration: none;
+    color: darkred;
+    padding: 6%;
+}
+
+#a1 {
+    margin-top: 3%;
+    margin-right: 5%;
+}
+
+#a2 {
+    margin-left: 4%;
+    margin-top: 1%;
+}
+ #a2 h6{
+    margin-top: 0px;
+    font-size: 20px;
+}
+#a2 a{
+    font-family: cursive;
+    background-color: mediumseagreen;
+    font-size: 36px;
+    padding: 6%;
+
+}
+#a1 h1{
+    margin-top: -1%;
+
+}
+#a4 {
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+}
+#a4 p{
+    margin-right: 5%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#a4 input{
+    width: 20%;
+}
+#a5 {
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+}
+#a5 p{
+    margin-right: 8%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#a5 input{
+    width: 20%;
+}#a6 {
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+}
+#a6 p{
+    margin-right: 5%;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#a6 input{
+    width: 20%;
+}
+
+main{
+    background-color: rgb(16, 205, 230);
+    padding-top: 1%;
+    border-top: brown solid 5px;
+    text-align: center;
+}
+main button{
+    margin-top: 3%;
+}
+#AC{
+    text-decoration: none;
+    color: darkred;
+    font-size: 28px;
+    border-radius: 7px;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+
+#resultado div img {
+width: 150px;
+}
+#resultado div{
+    border: solid black 2px;
+    margin: 6%;
+    overflow: hidden;
+    width: 50%;
+    margin-left: 27%;
+}
+#resultado div div{
+    border: white solid 2px;
+    display: flex;
+    justify-content: flex-end;
+    margin: 0%;
+    margin-top: -8%;
+    margin-left: 50%;
+}
+#resultado div button{
+    margin-left: 43%;
+}
+#resultado{
+    padding: 5%;
+   
+}
+#cesta{
+    display: flex;
+}
+#cesta a{
+    width: 26%;
+    background-color: mediumseagreen;
+    padding: 0%;
+}
+#papa{
+    margin-left: 115%;
+    width: 50%;
+    background-color: mediumseagreen;
+}
+#cesta div{
+    margin-left: 24%;
+}
+#cesta p{
+    font-size: 40px;
+}
+#pepe{
+    width: 96%;
+    background-color: mediumseagreen;
+}
+section{
+    text-align: center;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuperOsman</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div id="a2">
+            <a href="index.html">SuperOsman</a>
+            <h6>Donde deberías dejar tu dinero</h6>
+        </div>
+        <div id="a1">
+            <h1>A un solo paso de obtener calidad</h1>
+        </div>
+    </header>
+    <main id="main">
+        <div id="a4">
+            <p>Nombre de Usuario</p>
+            <input type="text" placeholder="Nombre de usuario" id="usuario">
+        </div>
+        <div id="a5">
+            <p>Contraseña</p>
+            <input type="password" placeholder="Contraseña" id="contrasenia">
+        </div>
+        <div id="a6">
+            <p>Confirme contraseña</p>
+            <input type="password" placeholder="Confirmación" id="contrasenia2">
+        </div>
+        <div>
+            <button onclick="Registro()">Registrate</button>
+        </div>
+    </main>
+    <script>
+        function Registro(){
+            let usuario =  document.getElementById('usuario').value;
+            let contrasenia =  document.getElementById('contrasenia').value;
+            let contrasenia2 =  document.getElementById('contrasenia2').value;
+            if(contrasenia!==contrasenia2){
+                document.getElementById('contrasenia').placeholder = "Contraseña Incorrecta";
+                document.getElementById('contrasenia').value = "";
+                document.getElementById('contrasenia2').placeholder = "Contraseña Incorrecta";
+                document.getElementById('contrasenia2').value = "";
+            }else{
+                let UsuarioNuevo = {usuario,contrasenia}
+                fetch('/api/registro',{
+                    method: "POST",
+                    headers:{
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(UsuarioNuevo)
+                }).then(function datos(datos){
+                    return datos.json()
+                }).then(function datos(datos){
+                    document.getElementById('main').innerHTML = `<div id="b"><h1>${datos.mensaje}</h1><a id="AC" href="ingreso.html">Ingresa</a></div>`
+                })
+            }
+            
+        }
+
+    </script>
+</body>
+
+</html>

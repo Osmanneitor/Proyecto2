@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>SuperOsman</title>
+</head>
+
+<body>
+    <header>
+        <div id="a2">
+            <a href="index.html">SuperOsman</a>
+            <h6>Donde deberías dejar tu dinero</h6>
+        </div>
+        <div id="a1">
+            <a id="ca" href="registro.html">Registrate</a><a id="ce" href="ingreso.html">/Ingresa</a>
+        </div>
+        <div id="cesta">
+
+        </div>
+    </header>
+
+
+    <div id="resultado">
+
+    </div>
+
+
+    <script>
+        Productos()
+        Validacion()
+        function Validacion() {
+            let usuario = JSON.parse(localStorage.getItem('validacion'));
+            if (usuario.valor === true) {
+                document.getElementById('a1').innerHTML = `<h1>Hola ${usuario.usuario}</h1>`
+                document.getElementById('a1').innerHTML += '<button onclick="salir()">Cerrar sesión</button>'
+                document.getElementById('cesta').innerHTML += '<a href="cesta.html"><img id="papa" src="./imagenes/cesta.svg"/></a>'
+            }
+        }
+        function salir() {
+            let usuario = JSON.parse(localStorage.getItem('validacion'));
+            window.alert(`Hasta luego ${usuario.usuario}`)
+            localStorage.removeItem('validacion');
+            window.location = 'Index.html'
+        }
+        let total = 0;
+        function Productos() {
+            let usuario = JSON.parse(localStorage.getItem('validacion'));
+            fetch('/api/cesta/usuario', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(usuario)
+            }).then(function datos(datos) {
+                return datos.json()
+            }).then(function datos(datos) {
+
+                for (let i = 0; i < datos[0].cesta.length; i++) {
+                    total += parseFloat(datos[0].cesta[i].precio);
+                    document.getElementById('resultado').innerHTML += `<div><h1>Producto: ${datos[0].cesta[i].producto}</h1><h2>Precio: ${datos[0].cesta[i].precio}</h2><h3>Cantidad: ${datos[0].cesta[i].cantidad}</h3></div>`
+                }
+                document.getElementById('resultado').innerHTML += `<input type="hidden" id="saldo" value="${datos[0].saldo}"><section><h5>Total a pagar: ${total}</h5><button onclick="eliminarCesta()">Eliminar cesta</button><button onclick="pagar()">Pagar</button></section>`
+                let Saldito = document.getElementById('saldo').value;
+                document.getElementById('cesta').innerHTML += `<div><p>Saldo: ${Saldito} </p></div>`
+            })
+
+        }
+        let saldoCuenta = document.getElementById('saldo').value;
+        document.getElementById('cesta').innerHTML += `<p>Saldo: ${saldoCuenta}€ </p>`
+        function pagar() {
+            let usuario = JSON.parse(localStorage.getItem('validacion'));
+            let saldo = parseFloat(total * 1) / 100;
+            let datosPago = { usuario, saldo }
+            fetch('/api/cesta/pagar', {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ datosPago })
+            }).then(function datos(datos) {
+                return datos.json()
+            }).then(function datos(datos) {
+
+                window.alert(datos.mensaje)
+                window.location = 'cesta.html'
+            })
+
+        }
+        function eliminarCesta() {
+            let usuario = JSON.parse(localStorage.getItem('validacion'));
+            fetch('/api/cesta/eliminar', {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(usuario)
+            }).then(function datos(datos) {
+                return datos.json()
+            }).then(function datos(datos) {
+                window.alert(datos.mensaje)
+                window.location = 'cesta.html'
+            })
+
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>SuperOsman</title>
+</head>
+
+<body>
+    <header id="header">
+        <div id="a2">
+            <a href="index.html">SuperOsman</a>
+            <h6>Donde deberías dejar tu dinero</h6>
+        </div>
+        <div id="a1">
+            <a id="ca" href="registro.html">Registrate</a><a id="ce" href="ingreso.html">/Ingresa</a>
+        </div>
+
+    </header>
+
+    <main>
+        <div id="busqueda1">
+            <p>Escoge una seccion</p>
+            <select id="valor1" onchange="cambiar()">
+                <option selected="true" disabled="disabled">Selecciona</option>
+                <option value="carniceria">Carniceria</option>
+                <option value="pescaderia">Pescaderia</option>
+                <option value="fruteria">Fruteria</option>
+                <option value="alimentacion">Alimentacion</option>
+                <option value="higiene">Higiene</option>
+                <option value="limpieza">Limpieza</option>
+            </select>
+        </div>
+        <div id="busqueda2"></div>
+        <div><button onclick="busqueda()">Buscar productos</button></div>
+    </main>
+    <div id="fondo">
+
+        <section id="resultado">
+
+
+        </section>
+    </div>
+    <script>
+        Validacion()
+
+        function busqueda() {
+            let a = document.getElementById('valor1').value;
+            let b = document.getElementById('valor2').value;
+            let usuario = JSON.parse(localStorage.getItem('validacion'));
+            if (b === "Selecciona") {
+
+                fetch(`/api/${a}/`).then(function datos(datos) {
+                    return datos.json()
+                }).then(function datos2(datos) {
+                    switch (a) {
+                        case "alimentacion": let div = '';
+
+                            for (let i = 0; i < datos.length; i++) {
+                                div += `<div><h2>Producto: ${datos[i].producto}</h2><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                for (let a = 0; a < datos[i]["rico en"].length; a++) {
+                                    div += `<h5>Rico en: ${datos[i]["rico en"][a]}</h5>`
+                                }
+                                if (usuario !== null) {
+                                    div += `<button onclick="aniadir('${datos[i].id}','${datos[i].imagen}' ,'${datos[i].producto}', '1','${datos[i].precio}' , 'alimentacion')">Añadir a la cesta</button></div>`
+                                } else {
+                                    div += '</div>'
+                                }
+                            }
+
+                            document.getElementById('resultado').innerHTML = div;
+                            break;
+                        case "carniceria": let a = '';
+
+                            for (let i = 0; i < datos.length; i++) {
+                                a += `<div><h2>Producto: ${datos[i].producto}</h2><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                for (let a = 0; a < datos[i]["rico en"].length; a++) {
+                                    a += `<h5>Rico en: ${datos[i]["rico en"][a]}</h5>`
+                                }
+                                if (usuario !== null) {
+                                    a += `<button onclick="aniadir('${datos[i].id}','${datos[i].producto}', '1','${datos[i].precio}' , 'carniceria')">Añadir a la cesta</button></div>`
+                                } else {
+                                    a += '</div>'
+                                }
+                            }
+
+                            document.getElementById('resultado').innerHTML = a;
+                            break;
+                        case "pescaderia": let b = '';
+                            for (let i = 0; i < datos.length; i++) {
+                                b += `<div><h2>Producto: ${datos[i].producto}</h2><h3>tipo: ${datos[i].tipo}</h3><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                if (usuario !== null) {
+                                    b += `<button onclick="aniadir('${datos[i].id}','${datos[i].producto}', '1','${datos[i].precio}' , 'pescaderia')">Añadir a la cesta</button></div>`
+                                } else {
+                                    b += '</div>'
+                                }
+                            }
+                            document.getElementById('resultado').innerHTML = b;
+                            break;
+                        case "fruteria": let c = '';
+
+                            for (let i = 0; i < datos.length; i++) {
+                                c += `<div><h2>Producto: ${datos[i].producto}</h2><h3>tipo: ${datos[i].tipo}</h3><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                for (let a = 0; a < datos[i]["rico en"].length; a++) {
+                                    c += `<h5>Rico en: ${datos[i]["rico en"][a]}</h5>`
+                                }
+                                if (usuario !== null) {
+                                    c += `<button onclick="aniadir('${datos[i].id}','${datos[i].producto}', '1','${datos[i].precio}' , 'fruteria')">Añadir a la cesta</button></div>`
+                                } else {
+                                    c += '</div>'
+                                }
+                            }
+
+                            document.getElementById('resultado').innerHTML = c;
+                            break;
+                        case "higiene": let d = '';
+                            for (let i = 0; i < datos.length; i++) {
+                                d += `<div><h2>Producto: ${datos[i].producto}</h2><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                if (usuario !== null) {
+                                    d += `<button onclick="aniadir('${datos[i].id}', '${datos[i].producto}', '1','${datos[i].precio}' , 'higiene')">Añadir a la cesta</button></div>`
+                                } else {
+                                    d += '</div>'
+                                }
+                            }
+                            document.getElementById('resultado').innerHTML = d;
+                            break;
+                        case "limpieza": let e = '';
+                            for (let i = 0; i < datos.length; i++) {
+                                e += `<div><h2>Producto: ${datos[i].producto}</h2><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                if (usuario !== null) {
+                                    e += `<button onclick="aniadir('${datos[i].id}','${datos[i].producto}', '1','${datos[i].precio}' , 'limpieza')">Añadir a la cesta</button></div>`
+                                } else {
+                                    e += '</div>'
+                                }
+                            }
+                            document.getElementById('resultado').innerHTML = e;
+                            break;
+                    }
+                })
+            } else {
+                fetch(`/api/${a}/${b}`).then(function datos(datos) {
+                    return datos.json()
+                }).then(function datos2(datos) {
+                    switch (a) {
+                        case "alimentacion": let div = '';
+
+                            for (let i = 0; i < datos.length; i++) {
+                                div += `<div><h2>Producto: ${datos[i].producto}</h2><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                for (let a = 0; a < datos[i]["rico en"].length; a++) {
+                                    div += `<h5>Rico en: ${datos[i]["rico en"][a]}</h5>`
+                                }
+                                if (usuario !== null) {
+                                    div += `<button onclick="aniadir('${datos[i].id}', '${datos[i].producto}', '1','${datos[i].precio}' ,'alimentacion')">Añadir a la cesta</button></div>`
+                                } else {
+                                    div += '</div>'
+                                }
+                            }
+
+                            document.getElementById('resultado').innerHTML = div;
+                            break;
+                        case "carniceria": let a = '';
+
+                            for (let i = 0; i < datos.length; i++) {
+                                a += `<div><h2>Producto: ${datos[i].producto}</h2><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                for (let a = 0; a < datos[i]["rico en"].length; a++) {
+                                    a += `<h5>Rico en: ${datos[i]["rico en"][a]}</h5>`
+                                }
+                                if (usuario !== null) {
+                                    a += `<button onclick="aniadir('${datos[i].id}', '${datos[i].producto}','1','${datos[i].precio}' , 'carniceria')">Añadir a la cesta</button></div>`
+                                } else {
+                                    a += '</div>'
+                                }
+                            }
+
+                            document.getElementById('resultado').innerHTML = a;
+                            break;
+                        case "pescaderia": let b = '';
+                            for (let i = 0; i < datos.length; i++) {
+                                b += `<div><h2>Producto: ${datos[i].producto}</h2><h3>tipo: ${datos[i].tipo}</h3><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                if (usuario !== null) {
+                                    b += `<button onclick="aniadir('${datos[i].id}', ${datos[i].imagen} , '${datos[i].producto}', '1','${datos[i].precio}' , 'pescaderia')">Añadir a la cesta</button></div>`
+                                } else {
+                                    b += '</div>'
+                                }
+                            }
+                            document.getElementById('resultado').innerHTML = b;
+                            break;
+                        case "fruteria": let c = '';
+
+                            for (let i = 0; i < datos.length; i++) {
+                                c += `<div><h2>Producto: ${datos[i].producto}</h2><h3>tipo: ${datos[i].tipo}</h3><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                for (let a = 0; a < datos[i]["rico en"].length; a++) {
+                                    c += `<h5>Rico en: ${datos[i]["rico en"][a]}</h5>`
+                                }
+                                if (usuario !== null) {
+                                    c += `<button onclick="aniadir('${datos[i].id}','${datos[i].producto}', '1','${datos[i].precio}' , 'fruteria')">Añadir a la cesta</button></div>`
+                                } else {
+                                    c += '</div>'
+                                }
+                            }
+
+                            document.getElementById('resultado').innerHTML = c;
+                            break;
+                        case "higiene": let d = '';
+                            for (let i = 0; i < datos.length; i++) {
+                                d += `<div><h2>Producto: ${datos[i].producto}</h2><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                if (usuario !== null) {
+                                    d += `<button onclick="aniadir('${datos[i].id}','${datos[i].producto}', '1','${datos[i].precio}' , 'higiene')">Añadir a la cesta</button></div>`
+                                } else {
+                                    d += '</div>'
+                                }
+                            }
+                            document.getElementById('resultado').innerHTML = d;
+                            break;
+                        case "limpieza": let e = '';
+                            for (let i = 0; i < datos.length; i++) {
+                                e += `<div><h2>Producto: ${datos[i].producto}</h2><h4>Precio: ${datos[i].precio}€</h4><div><img src="./imagenes/${datos[i].imagen}"/></div>`;
+                                if (usuario !== null) {
+                                    e += `<button onclick="aniadir('${datos[i].id}','${datos[i].producto}', '1','${datos[i].precio}' , 'limpieza')">Añadir a la cesta</button></div>`
+                                } else {
+                                    e += '</div>'
+                                }
+                            }
+                            document.getElementById('resultado').innerHTML = e;
+                            break;
+                    }
+
+                })
+            }
+        }
+        function cambiar() {
+            let valor = document.getElementById('valor1').value;
+            switch (valor) {
+                case "carniceria": document.getElementById('busqueda2').innerHTML = '<p>Aplica un filtro a tu busqueda</p><select id="valor2"><option selected="true" disabled="disabled">Selecciona</option><option value="barato">Mas barato</option><option value="caro">Mas caro</option><option value="proteinas">Proteinas</option><option value="grasas">Grasas</option>';
+                    break;
+                case "pescaderia": document.getElementById('busqueda2').innerHTML = '<p>Aplica un filtro a tu busqueda</p><select id="valor2"><option selected="true" disabled="disabled">Selecciona</option><option value="barato">Mas barato</option><option value="caro">Mas caro</option><option value="marisco">Marisco</option><option value="pez">pez</option>';
+                    break;
+                case "fruteria": document.getElementById('busqueda2').innerHTML = '<p>Aplica un filtro a tu busqueda</p><select id="valor2"><option selected="true" disabled="disabled">Selecciona</option><option value="barato">Mas barato</option><option value="caro">Mas caro</option><option value="fruta">fruta</option><option value="verdura">verdura</option>'
+                    break;
+                case "alimentacion": document.getElementById('busqueda2').innerHTML = '<p>Aplica un filtro a tu busqueda</p><select id="valor2"><option selected="true" disabled="disabled">Selecciona</option><option value="barato">Mas barato</option><option value="caro">Mas caro</option><option value="carbohidratos">Carbohidratos</option><option value="hierro">Hierro</option><option value="proteinas">Proteinas</option><option value="calcio">Calcio</option><option value="grasas">Grasas Saturadas</option>'
+                    break;
+                case "higiene": document.getElementById('busqueda2').innerHTML = '<p>Aplica un filtro a tu busqueda</p><select id="valor2"><option selected="true" disabled="disabled">Selecciona</option><option value="barato">Mas barato</option><option value="caro">Mas caro</option>'
+                    break;
+                case "limpieza": document.getElementById('busqueda2').innerHTML = '<p>Aplica un filtro a tu busqueda</p><select id="valor2"><option selected="true" disabled="disabled">Selecciona</option><option value="barato">Mas barato</option><option value="caro">Mas caro</option>'
+                    break;
+            }
+
+        }
+        function aniadir(id, imagen, producto, cantidad, precio, seccion) {
+            let UsuarioLogueado = document.getElementById('UsuarioLogueado').value
+            let id2 = parseInt(id)
+            let productoEnviar = { id2, imagen, producto, cantidad, precio, UsuarioLogueado };
+            fetch(`/api/${seccion}/${id2}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(productoEnviar)
+            }).then(fetch('/api/cesta', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(productoEnviar)
+            }).then(function datos(datos) {
+                return datos.json();
+            }).then(function datos(datos){
+                window.alert(datos.mensaje)
+            })
+            )
+        }
+        function Validacion() {
+            let usuario = JSON.parse(localStorage.getItem('validacion'));
+            if (usuario.valor === true) {
+                document.getElementById('a1').innerHTML = `<input type="hidden" id="UsuarioLogueado" value="${usuario.usuario}"><h1>Hola ${usuario.usuario}</h1>`
+                document.getElementById('a1').innerHTML += '<button onclick="salir()">Cerrar sesión</button>'
+                document.getElementById('header').innerHTML += '<div id="cesta"><a href="cesta.html"><img id="pepe" src="./imagenes/cesta.svg"/></a></div>'
+            }
+        }
+        function salir() {
+            let usuario = JSON.parse(localStorage.getItem('validacion'));
+            window.alert(`Hasta luego ${usuario.usuario}`)
+            localStorage.removeItem('validacion');
+            window.location = 'Index.html'
+        }
+    </script>
+</body>
+
+</html>
